@@ -37,7 +37,19 @@ snares = dai.folder_search("Samples/snares", "")
 basses = dai.folder_search("Samples/basses", key)
 hats = dai.folder_search("Samples/hats", "")
 
+empty_paths = []
 
+if kicks == []:
+    empty_paths.append("Samples/kicks")
+if snares == []:
+    empty_paths.append("Samples/snares")
+if basses == []:
+    empty_paths.append("Samples/basses")
+if hats == []:
+    empty_paths.append("Samples/hats")
+
+if empty_paths != []:
+    raise FileNotFoundError(f"Missing files in {empty_paths}.")
 
 for j in range(times):
 
