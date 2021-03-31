@@ -84,6 +84,9 @@ def hat_loop(sidechain, sample, bpm = 150, length = 8):
     Creates an audio file containing a loop of hat samples played in a 
     given BPM.
     """
+
+    sidechain_length = 150
+
     stem = AudioSegment.empty()
 
     sample = AudioSegment.from_wav(sample)
@@ -92,30 +95,17 @@ def hat_loop(sidechain, sample, bpm = 150, length = 8):
 
     for bar in range(length):
         if bar in sidechain:
-            stem += sample[:beat].fade_in(beat/3)
+            stem += sample[:beat].fade_in(sidechain_length)
             stem += AudioSegment.silent()[:beat].fade_out(30)
             continue
         stem += sample[:beat]
         stem += AudioSegment.silent()[:beat].fade_out(30)
     return stem
 
-def bass_loop(sidechain, samples, bpm = 150, length = 8):
-
-    stem = AudioSegment.empty()
-
-    bass_1 = AudioSegment.from_wav(samples.pop())
-    bass_2 = AudioSegment.from_wav(samples.pop())
-    bass_3 = AudioSegment.from_wav(samples.pop())
-
-    sample = bass_1
-    beat = 60/bpm*1000/2
-    length = length*2
-
-    calls = range(0, length, 4)
-
-    delay_length = random.randrange(int(beat/1.6), int(beat/1.2))
+def triplet_pattern():
 
     pattern_temp = []
+
     for i in range(4):
         if pattern_temp != []:
             if random.random() > 0.5:
@@ -128,10 +118,36 @@ def bass_loop(sidechain, samples, bpm = 150, length = 8):
             else:
                 pattern_temp.append(True)
 
+    return pattern_temp
+
+def bass_loop(sidechain, samples, bpm = 150, length = 8):
+
+
+    sidechain_length = 150
+
+    stem = AudioSegment.empty()
+
+    bass_1 = AudioSegment.from_wav(samples.pop())
+    bass_2 = AudioSegment.from_wav(samples.pop())
+    bass_3 = AudioSegment.from_wav(samples.pop())
+
+    sample = bass_1
+    beat = 60/bpm*1000/2
+    length = length*2
+
+    calls = range(0, length+1, 4)
+
+    delay_length = random.randrange(int(beat/1.6), int(beat/1.2))
+
+    pattern_temp = triplet_pattern()
+
+
     pattern = []
     count = 0
 
     for bar in range(length):
+        if bar in range(16, length+1, 16):
+            pattern_temp = triplet_pattern()
         if bar in range(0, length, 4):
             for item in pattern_temp:
                 count += 1
@@ -151,13 +167,17 @@ def bass_loop(sidechain, samples, bpm = 150, length = 8):
 
         if bar in calls: 
             sample = bass_1
-        
+
         elif delay > 0:
             sample = bass_2
 
+        else:
+            sample = bass_2
+        
+
         if bar in sidechain and delay == 0:
-            stem += sample[:beat].fade_in(beat/3).fade_out(50)
-            stem += AudioSegment.silent()[:beat]
+            stem += sample[:beat].fade_in(sidechain_length).fade_out(50)
+            stem += AudioSegment.silent()[:beat].fade_out(10)
             continue
 
         elif delay > 0:
