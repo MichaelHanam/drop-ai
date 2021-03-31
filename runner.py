@@ -55,14 +55,14 @@ for j in range(times):
     bass_stem = dai.bass_loop(sidechain, list(basses), bpm, length)
     hat_stem = dai.hat_loop(sidechain, random.choice(hats), bpm, length)
 
-    kick_stem[0].export(PureWindowsPath(f"Test/{i} - {name}-kick_stem.wav"), "wav")
+    kick_stem[0].export(PureWindowsPath(f"Result/{i} - {name}-kick_stem.wav"), "wav")
     print(f"Exported 'kick_stem-{i} {name}.wav' successfully!")
 
-    snare_stem[0].export(PureWindowsPath(f"Test/{i} - {name}-snare_stem.wav"), "wav")
+    snare_stem[0].export(PureWindowsPath(f"Result/{i} - {name}-snare_stem.wav"), "wav")
     print(f"Exported 'snare_stem-{i} {name}.wav' successfully!")
 
-    bass_stem.export(PureWindowsPath(f"Test/{i} - {name}-bass_stem.wav"), "wav")
+    bass_stem.export(PureWindowsPath(f"Result/{i} - {name}-bass_stem.wav"), "wav")
     print(f"Exported 'bass_stem-{i} {name}.wav' successfully!")
 
-    hat_stem.export(PureWindowsPath(f"Test/{i} - {name}-hat_stem.wav"), "wav")
+    hat_stem.export(PureWindowsPath(f"Result/{i} - {name}-hat_stem.wav"), "wav")
     print(f"Exported 'hat_stem-{i} {name}.wav' successfully!")
